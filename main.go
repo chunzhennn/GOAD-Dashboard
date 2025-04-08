@@ -15,5 +15,11 @@ func main() {
 		})
 	})
 
+	router.POST("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "flag{fake_flag}",
+		})
+	})
+
 	router.Run()
 }
