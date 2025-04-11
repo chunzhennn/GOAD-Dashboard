@@ -1,0 +1,161 @@
+definitions:
+  pve.VMInfo:
+    properties:
+      cpu:
+        type: number
+      disk:
+        type: number
+      id:
+        type: string
+      mem:
+        type: number
+      name:
+        type: string
+      node:
+        type: string
+      status:
+        type: string
+      uptime:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /api/pve/reset:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves the timestamp of the last lab reset
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: integer
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get last reset time
+      tags:
+      - PVE
+    post:
+      consumes:
+      - application/json
+      description: Resets all VMs to their latest snapshots
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Reset the lab
+      tags:
+      - PVE
+  /api/pve/vms:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves information about all virtual machines
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/pve.VMInfo'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get all VMs
+      tags:
+      - PVE
+  /api/pve/vms/reset:
+    post:
+      consumes:
+      - application/json
+      description: Resets all virtual machines
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Reset all VMs
+      tags:
+      - PVE
+  /api/pve/vms/start:
+    post:
+      consumes:
+      - application/json
+      description: Starts all virtual machines
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Start all VMs
+      tags:
+      - PVE
+  /api/pve/vms/stop:
+    post:
+      consumes:
+      - application/json
+      description: Stops all virtual machines
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Stop all VMs
+      tags:
+      - PVE
+swagger: "2.0"

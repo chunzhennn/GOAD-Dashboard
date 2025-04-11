@@ -8,3 +8,21 @@ A dashboard for displaying GOAD lab status
 - Get the status of client connections from pfSense
 - Send requests of restoring lab instance snapshots to Proxmox VE
 - Log the time of the last reset request
+
+### Configurations
+
+Environment Variables
+
+| Variable | Description | Required | Default |
+|----------|-------------|----------|---------|
+| PROXMOX_URL | Proxmox VE API URL (e.g., https://proxmox.example.com:8006) | Yes | - |
+| PROXMOX_USERNAME | Proxmox VE API username | Yes | - |
+| PROXMOX_REALM | Proxmox VE authentication realm (e.g., pam, pve) | Yes | - |
+| PROXMOX_API_TOKEN_NAME | Proxmox VE API token name | Yes | - |
+| PROXMOX_API_TOKEN | Proxmox VE API token value | Yes | - |
+| PFSENSE_URL | pfSense API URL | No | - |
+| PFSENSE_USERNAME | pfSense API username | No | - |
+| PFSENSE_PASSWORD | pfSense API password | No | - |
+| ENABLE_SWAGGER | Enable Swagger UI documentation (set to "1" to enable) | No | - |
+
+
