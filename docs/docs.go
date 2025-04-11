@@ -102,7 +102,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/pve.VMInfo"
+                                "$ref": "#/definitions/proxmox.VMInfo"
                             }
                         }
                     },
@@ -225,7 +225,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "pve.VMInfo": {
+        "proxmox.VMInfo": {
             "type": "object",
             "properties": {
                 "cpu": {

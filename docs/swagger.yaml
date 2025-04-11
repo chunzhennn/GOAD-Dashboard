@@ -1,5 +1,5 @@
 definitions:
-  pve.VMInfo:
+  proxmox.VMInfo:
     properties:
       cpu:
         type: number
@@ -78,7 +78,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/pve.VMInfo'
+              $ref: '#/definitions/proxmox.VMInfo'
             type: array
         "500":
           description: Internal Server Error

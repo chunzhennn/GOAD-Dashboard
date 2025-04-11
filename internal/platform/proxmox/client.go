@@ -1,4 +1,4 @@
-package pve
+package proxmox
 
 import (
 	"bytes"
@@ -10,6 +10,8 @@ import (
 	"net/http"
 	"sync/atomic"
 	"time"
+
+	"github.com/chunzhennn/GOAD-Dashboard/internal/config"
 )
 
 // PVEClient represents a client for the Proxmox VE API
@@ -39,12 +41,8 @@ type SnapshotInfo struct {
 	SnapTime    int64  `json:"snaptime"`
 }
 
-type Config interface {
-	GetProxmoxURL() string
-	GetProxmoxAuthToken() string
-}
-
-func NewPVEClientFromConfig(config Config) *PVEClient {
+// NewPVEClientFromConfig creates a new Proxmox VE client using the application config
+func NewPVEClientFromConfig(config *config.Config) *PVEClient {
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
@@ -54,11 +52,10 @@ func NewPVEClientFromConfig(config Config) *PVEClient {
 		BaseURL:   config.GetProxmoxURL(),
 		APIToken:  config.GetProxmoxAuthToken(),
 		Client:    client,
-		lastReset: 0, // 初始时间戳为 0
+		lastReset: 0,
 	}
 }
 
-// makeRequest makes an authenticated request to the Proxmox VE API
 func (c *PVEClient) makeRequest(method, path string, body interface{}) ([]byte, error) {
 	var reqBody io.Reader
 	if body != nil {

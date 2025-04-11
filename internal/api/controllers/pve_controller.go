@@ -3,15 +3,17 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/chunzhennn/GOAD-Dashboard/pve"
+	"github.com/chunzhennn/GOAD-Dashboard/internal/platform/proxmox"
 	"github.com/gin-gonic/gin"
 )
 
+// PVEController handles all PVE-related endpoints
 type PVEController struct {
-	pveClient *pve.PVEClient
+	pveClient *proxmox.PVEClient
 }
 
-func NewPVEController(pveClient *pve.PVEClient) *PVEController {
+// NewPVEController creates a new PVE controller
+func NewPVEController(pveClient *proxmox.PVEClient) *PVEController {
 	return &PVEController{
 		pveClient: pveClient,
 	}
@@ -23,7 +25,7 @@ func NewPVEController(pveClient *pve.PVEClient) *PVEController {
 // @Tags PVE
 // @Accept json
 // @Produce json
-// @Success 200 {array} pve.VMInfo
+// @Success 200 {array} proxmox.VMInfo
 // @Failure 500 {object} map[string]string
 // @Router /api/pve/vms [get]
 func (c *PVEController) GetVMs(ctx *gin.Context) {

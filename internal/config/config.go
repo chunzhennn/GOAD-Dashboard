@@ -1,4 +1,4 @@
-package main
+package config
 
 import (
 	"fmt"
@@ -48,10 +48,12 @@ func LoadConfig() (*Config, error) {
 	return config, nil
 }
 
+// GetProxmoxURL returns the Proxmox URL
 func (c *Config) GetProxmoxURL() string {
 	return c.ProxmoxURL
 }
 
+// GetProxmoxAuthToken returns the Proxmox auth token
 func (c *Config) GetProxmoxAuthToken() string {
 	return c.ProxmoxAuthToken
 }

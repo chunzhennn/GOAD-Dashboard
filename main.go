@@ -5,21 +5,22 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/chunzhennn/GOAD-Dashboard/api/controllers"
 	_ "github.com/chunzhennn/GOAD-Dashboard/docs"
-	"github.com/chunzhennn/GOAD-Dashboard/pve"
+	"github.com/chunzhennn/GOAD-Dashboard/internal/api/controllers"
+	"github.com/chunzhennn/GOAD-Dashboard/internal/config"
+	"github.com/chunzhennn/GOAD-Dashboard/internal/platform/proxmox"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func main() {
-	config, err := LoadConfig()
+	config, err := config.LoadConfig()
 	if err != nil {
 		log.Fatalf("Failed to load configuration: %v", err)
 	}
 
-	pveClient := pve.NewPVEClientFromConfig(config)
+	pveClient := proxmox.NewPVEClientFromConfig(config)
 	pveController := controllers.NewPVEController(pveClient)
 
 	router := gin.Default()

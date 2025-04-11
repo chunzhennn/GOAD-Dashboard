@@ -91,7 +91,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/pve.VMInfo"
+                                "$ref": "#/definitions/proxmox.VMInfo"
                             }
                         }
                     },
@@ -214,7 +214,7 @@
         }
     },
     "definitions": {
-        "pve.VMInfo": {
+        "proxmox.VMInfo": {
             "type": "object",
             "properties": {
                 "cpu": {
