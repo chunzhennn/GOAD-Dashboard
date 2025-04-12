@@ -1,4 +1,13 @@
 definitions:
+  pfsense.PfsenseOpenVPNConnection:
+    properties:
+      common_name:
+        type: string
+      connect_time_unix:
+        type: integer
+      id:
+        type: integer
+    type: object
   proxmox.VMInfo:
     properties:
       cpu:
@@ -21,6 +30,29 @@ definitions:
 info:
   contact: {}
 paths:
+  /api/pfsense/openvpn/connections:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves information about all OpenVPN connections
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/pfsense.PfsenseOpenVPNConnection'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get all OpenVPN connections
+      tags:
+      - PFSENSE
   /api/pve/reset:
     get:
       consumes:

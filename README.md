@@ -20,9 +20,9 @@ Environment Variables
 | PROXMOX_REALM | Proxmox VE authentication realm (e.g., pam, pve) | Yes | - |
 | PROXMOX_API_TOKEN_NAME | Proxmox VE API token name | Yes | - |
 | PROXMOX_API_TOKEN | Proxmox VE API token value | Yes | - |
-| PFSENSE_URL | pfSense API URL | No | - |
-| PFSENSE_USERNAME | pfSense API username | No | - |
-| PFSENSE_PASSWORD | pfSense API password | No | - |
+| PFSENSE_URL | pfSense API URL | Yes | - |
+| PFSENSE_USERNAME | pfSense API username | Yes | - |
+| PFSENSE_PASSWORD | pfSense API password | Yes | - |
 | ENABLE_SWAGGER | Enable Swagger UI documentation (set to "1" to enable) | No | - |
 
 

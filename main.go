@@ -8,6 +8,7 @@ import (
 	_ "github.com/chunzhennn/GOAD-Dashboard/docs"
 	"github.com/chunzhennn/GOAD-Dashboard/internal/api/controllers"
 	"github.com/chunzhennn/GOAD-Dashboard/internal/config"
+	"github.com/chunzhennn/GOAD-Dashboard/internal/platform/pfsense"
 	"github.com/chunzhennn/GOAD-Dashboard/internal/platform/proxmox"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -41,6 +42,15 @@ func main() {
 		pveGroup.POST("/vms/reset", pveController.ResetAllVMs)
 		pveGroup.GET("/reset", pveController.GetLastReset)
 		pveGroup.POST("/reset", pveController.ResetLab)
+	}
+
+	pfsenseClient := pfsense.NewPfsenseClient(config)
+	pfsenseController := controllers.NewPfsenseController(pfsenseClient)
+
+	// PFSENSE API endpoints
+	pfsenseGroup := router.Group("/api/pfsense")
+	{
+		pfsenseGroup.GET("/openvpn/clients", pfsenseController.GetOpenVPNConnections)
 	}
 
 	swaggerEnabled := os.Getenv("ENABLE_SWAGGER")

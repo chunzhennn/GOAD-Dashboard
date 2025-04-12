@@ -17,8 +17,8 @@ import (
 // PVEClient represents a client for the Proxmox VE API
 type PVEClient struct {
 	BaseURL   string
-	APIToken  string
-	Client    *http.Client
+	AuthToken string
+	client    *http.Client
 	lastReset uint64 // Unix 时间戳，使用原子操作访问
 }
 
@@ -50,8 +50,8 @@ func NewPVEClientFromConfig(config *config.Config) *PVEClient {
 
 	return &PVEClient{
 		BaseURL:   config.GetProxmoxURL(),
-		APIToken:  config.GetProxmoxAuthToken(),
-		Client:    client,
+		AuthToken: config.GetProxmoxAuthToken(),
+		client:    client,
 		lastReset: 0,
 	}
 }
@@ -74,9 +74,9 @@ func (c *PVEClient) makeRequest(method, path string, body interface{}) ([]byte, 
 	if body != nil {
 		req.Header.Add("Content-Type", "application/json")
 	}
-	req.Header.Add("Authorization", fmt.Sprintf("PVEAPIToken=%s", c.APIToken))
+	req.Header.Add("Authorization", fmt.Sprintf("PVEAPIToken=%s", c.AuthToken))
 
-	resp, err := c.Client.Do(req)
+	resp, err := c.client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("request failed: %w", err)
 	}

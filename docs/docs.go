@@ -15,6 +15,41 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/pfsense/openvpn/connections": {
+            "get": {
+                "description": "Retrieves information about all OpenVPN connections",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "PFSENSE"
+                ],
+                "summary": "Get all OpenVPN connections",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/pfsense.PfsenseOpenVPNConnection"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/pve/reset": {
             "get": {
                 "description": "Retrieves the timestamp of the last lab reset",
@@ -225,6 +260,20 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "pfsense.PfsenseOpenVPNConnection": {
+            "type": "object",
+            "properties": {
+                "common_name": {
+                    "type": "string"
+                },
+                "connect_time_unix": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
         "proxmox.VMInfo": {
             "type": "object",
             "properties": {
