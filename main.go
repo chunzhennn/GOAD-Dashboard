@@ -15,6 +15,9 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// @title GOAD Dashboard API
+// @version 1.0
+// @description GOAD Dashboard API
 func main() {
 	config, err := config.LoadConfig()
 	if err != nil {
@@ -50,7 +53,7 @@ func main() {
 	// PFSENSE API endpoints
 	pfsenseGroup := router.Group("/api/pfsense")
 	{
-		pfsenseGroup.GET("/openvpn/clients", pfsenseController.GetOpenVPNConnections)
+		pfsenseGroup.GET("/openvpn/connections", pfsenseController.GetOpenVPNConnections)
 	}
 
 	swaggerEnabled := os.Getenv("ENABLE_SWAGGER")

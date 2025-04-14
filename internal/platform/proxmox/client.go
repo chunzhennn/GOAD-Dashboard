@@ -24,14 +24,21 @@ type PVEClient struct {
 
 // VMInfo contains information about a virtual machine
 type VMInfo struct {
-	ID     string  `json:"id"`
-	Name   string  `json:"name"`
-	Status string  `json:"status"`
-	CPU    float64 `json:"cpu"`
-	Memory float64 `json:"mem"`
-	Disk   float64 `json:"disk"`
-	Uptime int     `json:"uptime"`
-	Node   string  `json:"node"`
+	ID        string  `json:"id"`
+	Name      string  `json:"name"`
+	Status    string  `json:"status"`
+	CPU       float64 `json:"cpu"`       // 当前 CPU 使用率
+	CPUs      float64 `json:"cpus"`      // 最大可用 CPU 数量
+	Memory    float64 `json:"mem"`       // 当前内存使用
+	MaxMem    int64   `json:"maxmem"`    // 最大内存 (字节)
+	Disk      float64 `json:"disk"`      // 当前磁盘使用率
+	MaxDisk   int64   `json:"maxdisk"`   // 根磁盘大小 (字节)
+	DiskRead  int64   `json:"diskread"`  // 总磁盘读取量 (字节)
+	DiskWrite int64   `json:"diskwrite"` // 总磁盘写入量 (字节)
+	NetIn     int64   `json:"netin"`     // 总网络流入量 (字节)
+	NetOut    int64   `json:"netout"`    // 总网络流出量 (字节)
+	Uptime    int     `json:"uptime"`    // 运行时间 (秒)
+	Node      string  `json:"node"`
 }
 
 // SnapshotInfo contains information about a snapshot
@@ -136,13 +143,20 @@ func (c *PVEClient) GetVMs() ([]VMInfo, error) {
 
 		var result struct {
 			Data []struct {
-				VMID   int     `json:"vmid"`
-				Name   string  `json:"name"`
-				Status string  `json:"status"`
-				CPU    float64 `json:"cpu"`
-				Mem    float64 `json:"mem"`
-				Disk   float64 `json:"disk"`
-				Uptime int     `json:"uptime"`
+				VMID      int     `json:"vmid"`
+				Name      string  `json:"name"`
+				Status    string  `json:"status"`
+				CPU       float64 `json:"cpu"`
+				CPUs      float64 `json:"cpus"`
+				Mem       float64 `json:"mem"`
+				MaxMem    int64   `json:"maxmem"`
+				Disk      float64 `json:"disk"`
+				MaxDisk   int64   `json:"maxdisk"`
+				DiskRead  int64   `json:"diskread"`
+				DiskWrite int64   `json:"diskwrite"`
+				NetIn     int64   `json:"netin"`
+				NetOut    int64   `json:"netout"`
+				Uptime    int     `json:"uptime"`
 			} `json:"data"`
 		}
 
@@ -153,15 +167,21 @@ func (c *PVEClient) GetVMs() ([]VMInfo, error) {
 
 		for _, vm := range result.Data {
 			allVMs = append(allVMs, VMInfo{
-				ID:     fmt.Sprintf("%d", vm.VMID),
-				Name:   vm.Name,
-				Status: vm.Status,
-				CPU:    vm.CPU,
-				Memory: vm.Mem,
-				Disk:   vm.Disk,
-				Uptime: vm.Uptime,
-				Node:   node,
-				// LastReset will be populated separately
+				ID:        fmt.Sprintf("%d", vm.VMID),
+				Name:      vm.Name,
+				Status:    vm.Status,
+				CPU:       vm.CPU,
+				CPUs:      vm.CPUs,
+				Memory:    vm.Mem,
+				MaxMem:    vm.MaxMem,
+				Disk:      vm.Disk,
+				MaxDisk:   vm.MaxDisk,
+				DiskRead:  vm.DiskRead,
+				DiskWrite: vm.DiskWrite,
+				NetIn:     vm.NetIn,
+				NetOut:    vm.NetOut,
+				Uptime:    vm.Uptime,
+				Node:      node,
 			})
 		}
 	}

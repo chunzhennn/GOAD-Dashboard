@@ -11,24 +11,52 @@ definitions:
   proxmox.VMInfo:
     properties:
       cpu:
+        description: 当前 CPU 使用率
+        type: number
+      cpus:
+        description: 最大可用 CPU 数量
         type: number
       disk:
+        description: 当前磁盘使用率
         type: number
+      diskread:
+        description: 总磁盘读取量 (字节)
+        type: integer
+      diskwrite:
+        description: 总磁盘写入量 (字节)
+        type: integer
       id:
         type: string
+      maxdisk:
+        description: 根磁盘大小 (字节)
+        type: integer
+      maxmem:
+        description: 最大内存 (字节)
+        type: integer
       mem:
+        description: 当前内存使用
         type: number
       name:
         type: string
+      netin:
+        description: 总网络流入量 (字节)
+        type: integer
+      netout:
+        description: 总网络流出量 (字节)
+        type: integer
       node:
         type: string
       status:
         type: string
       uptime:
+        description: 运行时间 (秒)
         type: integer
     type: object
 info:
   contact: {}
+  description: GOAD Dashboard API
+  title: GOAD Dashboard API
+  version: "1.0"
 paths:
   /api/pfsense/openvpn/connections:
     get:

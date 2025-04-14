@@ -25,4 +25,12 @@ Environment Variables
 | PFSENSE_PASSWORD | pfSense API password | Yes | - |
 | ENABLE_SWAGGER | Enable Swagger UI documentation (set to "1" to enable) | No | - |
 
+## Frontend
 
+- Display current status of VMs (Up/Down/Resource Usage)
+
+- Display current VPN users and their connection time
+
+- Start/Stop/Reset VMs
+
+- Restore snapshots of VMs and display last restore time

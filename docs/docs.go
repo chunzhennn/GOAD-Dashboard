@@ -278,19 +278,50 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "cpu": {
+                    "description": "当前 CPU 使用率",
+                    "type": "number"
+                },
+                "cpus": {
+                    "description": "最大可用 CPU 数量",
                     "type": "number"
                 },
                 "disk": {
+                    "description": "当前磁盘使用率",
                     "type": "number"
+                },
+                "diskread": {
+                    "description": "总磁盘读取量 (字节)",
+                    "type": "integer"
+                },
+                "diskwrite": {
+                    "description": "总磁盘写入量 (字节)",
+                    "type": "integer"
                 },
                 "id": {
                     "type": "string"
                 },
+                "maxdisk": {
+                    "description": "根磁盘大小 (字节)",
+                    "type": "integer"
+                },
+                "maxmem": {
+                    "description": "最大内存 (字节)",
+                    "type": "integer"
+                },
                 "mem": {
+                    "description": "当前内存使用",
                     "type": "number"
                 },
                 "name": {
                     "type": "string"
+                },
+                "netin": {
+                    "description": "总网络流入量 (字节)",
+                    "type": "integer"
+                },
+                "netout": {
+                    "description": "总网络流出量 (字节)",
+                    "type": "integer"
                 },
                 "node": {
                     "type": "string"
@@ -299,6 +330,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "uptime": {
+                    "description": "运行时间 (秒)",
                     "type": "integer"
                 }
             }
@@ -308,12 +340,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
+	Version:          "1.0",
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "GOAD Dashboard API",
+	Description:      "GOAD Dashboard API",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
