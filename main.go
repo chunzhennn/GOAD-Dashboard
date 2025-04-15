@@ -16,6 +16,7 @@ import (
 	"github.com/chunzhennn/GOAD-Dashboard/internal/platform/proxmox"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/httprate"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
@@ -48,12 +49,14 @@ func main() {
 	router.Route("/api/pve", func(r chi.Router) {
 		// GET group
 		r.Group(func(r chi.Router) {
+			r.Use(httprate.LimitByIP(2, 1*time.Second))
 			r.Get("/vms", pveController.GetVMs)
 			r.Get("/reset", pveController.GetLastReset)
 		})
 
 		// POST group
 		r.Group(func(r chi.Router) {
+			r.Use(httprate.LimitByIP(1, 10*time.Second))
 			r.Post("/vms/start", pveController.StartAllVMs)
 			r.Post("/vms/stop", pveController.StopAllVMs)
 			r.Post("/vms/reset", pveController.ResetAllVMs)
@@ -66,6 +69,7 @@ func main() {
 
 	// PFSENSE API endpoints
 	router.Route("/api/pfsense", func(r chi.Router) {
+		r.Use(httprate.LimitByIP(2, 1*time.Second))
 		r.Get("/openvpn/connections", pfsenseController.GetOpenVPNConnections)
 	})
 
