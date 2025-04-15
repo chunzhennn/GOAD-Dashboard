@@ -162,9 +162,9 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/proxmox.VMOperationResult"
                             }
                         }
                     },
@@ -197,9 +197,9 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/proxmox.VMOperationResult"
                             }
                         }
                     },
@@ -232,9 +232,9 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/proxmox.VMOperationResult"
                             }
                         }
                     },
@@ -324,6 +324,20 @@
                 "uptime": {
                     "description": "运行时间 (秒)",
                     "type": "integer"
+                }
+            }
+        },
+        "proxmox.VMOperationResult": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "vmid": {
+                    "type": "string"
                 }
             }
         }

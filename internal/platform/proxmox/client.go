@@ -48,6 +48,13 @@ type SnapshotInfo struct {
 	SnapTime    int64  `json:"snaptime"`
 }
 
+// VMOperationResult contains the result of an operation
+type VMOperationResult struct {
+	VMID    string `json:"vmid"`
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
+
 // NewPVEClientFromConfig creates a new Proxmox VE client using the application config
 func NewPVEClientFromConfig(config *config.Config) *PVEClient {
 	tr := &http.Transport{
@@ -316,50 +323,62 @@ func (c *PVEClient) ResetVM(node string, vmID string) error {
 	return nil
 }
 
-func (c *PVEClient) StartAllVMs() error {
+func (c *PVEClient) StartAllVMs() ([]VMOperationResult, error) {
 	vms, err := c.GetVMs()
 	if err != nil {
-		return fmt.Errorf("failed to get VMs: %w", err)
+		return nil, fmt.Errorf("failed to get VMs: %w", err)
 	}
 
-	for _, vm := range vms {
+	results := make([]VMOperationResult, len(vms))
+
+	for i, vm := range vms {
 		err := c.StartVM(vm.Node, vm.ID)
 		if err != nil {
-			return fmt.Errorf("failed to start VM %s on node %s: %w", vm.ID, vm.Node, err)
+			results[i] = VMOperationResult{VMID: vm.ID, Success: false, Message: err.Error()}
+		} else {
+			results[i] = VMOperationResult{VMID: vm.ID, Success: true}
 		}
 	}
 
-	return nil
+	return results, nil
 }
 
-func (c *PVEClient) StopAllVMs() error {
+func (c *PVEClient) StopAllVMs() ([]VMOperationResult, error) {
 	vms, err := c.GetVMs()
 	if err != nil {
-		return fmt.Errorf("failed to get VMs: %w", err)
+		return nil, fmt.Errorf("failed to get VMs: %w", err)
 	}
 
-	for _, vm := range vms {
+	results := make([]VMOperationResult, len(vms))
+
+	for i, vm := range vms {
 		err := c.StopVM(vm.Node, vm.ID)
 		if err != nil {
-			return fmt.Errorf("failed to stop VM %s on node %s: %w", vm.ID, vm.Node, err)
+			results[i] = VMOperationResult{VMID: vm.ID, Success: false, Message: err.Error()}
+		} else {
+			results[i] = VMOperationResult{VMID: vm.ID, Success: true}
 		}
 	}
 
-	return nil
+	return results, nil
 }
 
-func (c *PVEClient) ResetAllVMs() error {
+func (c *PVEClient) ResetAllVMs() ([]VMOperationResult, error) {
 	vms, err := c.GetVMs()
 	if err != nil {
-		return fmt.Errorf("failed to get VMs: %w", err)
+		return nil, fmt.Errorf("failed to get VMs: %w", err)
 	}
 
-	for _, vm := range vms {
+	results := make([]VMOperationResult, len(vms))
+
+	for i, vm := range vms {
 		err := c.ResetVM(vm.Node, vm.ID)
 		if err != nil {
-			return fmt.Errorf("failed to reset VM %s on node %s: %w", vm.ID, vm.Node, err)
+			results[i] = VMOperationResult{VMID: vm.ID, Success: false, Message: err.Error()}
+		} else {
+			results[i] = VMOperationResult{VMID: vm.ID, Success: true}
 		}
 	}
 
-	return nil
+	return results, nil
 }

@@ -170,9 +170,9 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/proxmox.VMOperationResult"
                             }
                         }
                     },
@@ -205,9 +205,9 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/proxmox.VMOperationResult"
                             }
                         }
                     },
@@ -240,9 +240,9 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/proxmox.VMOperationResult"
                             }
                         }
                     },
@@ -332,6 +332,20 @@ const docTemplate = `{
                 "uptime": {
                     "description": "运行时间 (秒)",
                     "type": "integer"
+                }
+            }
+        },
+        "proxmox.VMOperationResult": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "vmid": {
+                    "type": "string"
                 }
             }
         }

@@ -43,17 +43,16 @@ func (c *PVEController) GetVMs(w http.ResponseWriter, r *http.Request) {
 // @Tags PVE
 // @Accept json
 // @Produce json
-// @Success 200 {object} map[string]string
+// @Success 200 {array} proxmox.VMOperationResult
 // @Failure 500 {object} map[string]string
 // @Router /api/pve/vms/start [post]
 func (c *PVEController) StartAllVMs(w http.ResponseWriter, r *http.Request) {
-	err := c.pveClient.StartAllVMs()
+	results, err := c.pveClient.StartAllVMs()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(`{"message": "All VMs started successfully"}`))
+	json.NewEncoder(w).Encode(results)
 }
 
 // StopAllVMs handles POST /api/pve/vms/stop
@@ -62,17 +61,16 @@ func (c *PVEController) StartAllVMs(w http.ResponseWriter, r *http.Request) {
 // @Tags PVE
 // @Accept json
 // @Produce json
-// @Success 200 {object} map[string]string
+// @Success 200 {array} proxmox.VMOperationResult
 // @Failure 500 {object} map[string]string
 // @Router /api/pve/vms/stop [post]
 func (c *PVEController) StopAllVMs(w http.ResponseWriter, r *http.Request) {
-	err := c.pveClient.StopAllVMs()
+	results, err := c.pveClient.StopAllVMs()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(`{"message": "All VMs stopped successfully"}`))
+	json.NewEncoder(w).Encode(results)
 }
 
 // ResetAllVMs handles POST /api/pve/vms/reset
@@ -81,17 +79,16 @@ func (c *PVEController) StopAllVMs(w http.ResponseWriter, r *http.Request) {
 // @Tags PVE
 // @Accept json
 // @Produce json
-// @Success 200 {object} map[string]string
+// @Success 200 {array} proxmox.VMOperationResult
 // @Failure 500 {object} map[string]string
 // @Router /api/pve/vms/reset [post]
 func (c *PVEController) ResetAllVMs(w http.ResponseWriter, r *http.Request) {
-	err := c.pveClient.ResetAllVMs()
+	results, err := c.pveClient.ResetAllVMs()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(`{"message": "All VMs reset successfully"}`))
+	json.NewEncoder(w).Encode(results)
 }
 
 // GetLastReset handles GET /api/pve/reset

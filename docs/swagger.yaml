@@ -52,6 +52,15 @@ definitions:
         description: 运行时间 (秒)
         type: integer
     type: object
+  proxmox.VMOperationResult:
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+      vmid:
+        type: string
+    type: object
 info:
   contact: {}
   description: GOAD Dashboard API
@@ -160,9 +169,9 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            items:
+              $ref: '#/definitions/proxmox.VMOperationResult'
+            type: array
         "500":
           description: Internal Server Error
           schema:
@@ -183,9 +192,9 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            items:
+              $ref: '#/definitions/proxmox.VMOperationResult'
+            type: array
         "500":
           description: Internal Server Error
           schema:
@@ -206,9 +215,9 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            items:
+              $ref: '#/definitions/proxmox.VMOperationResult'
+            type: array
         "500":
           description: Internal Server Error
           schema:
