@@ -8,6 +8,7 @@ A dashboard for displaying GOAD lab status
 - Get the status of client connections from pfSense
 - Send requests of restoring lab instance snapshots to Proxmox VE
 - Log the time of the last reset request
+- Rate limit for each endpoint
 
 ### Configurations
 
@@ -23,7 +24,8 @@ Environment Variables
 | PFSENSE_URL | pfSense API URL | Yes | - |
 | PFSENSE_USERNAME | pfSense API username | Yes | - |
 | PFSENSE_PASSWORD | pfSense API password | Yes | - |
-| ENABLE_SWAGGER | Enable Swagger UI documentation (set to "1" to enable) | No | - |
+| ENABLE_SWAGGER | Enable Swagger UI documentation (set to "1" to enable) | No | 0 |
+| PORT | Port for the application to run on | No | 8080 |
 
 ## Frontend
 
