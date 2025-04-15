@@ -20,8 +20,7 @@ FROM alpine:latest
 WORKDIR /app
 COPY --from=backend-builder /app/backend/build/GOAD-Dashboard .
 
-ENV PORT=8080 \
-    GIN_MODE=release
+ENV PORT=8080
 EXPOSE 8080
 
 CMD ["/app/GOAD-Dashboard"]

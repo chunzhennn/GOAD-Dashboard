@@ -1,10 +1,10 @@
 package controllers
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/chunzhennn/GOAD-Dashboard/internal/platform/proxmox"
-	"github.com/gin-gonic/gin"
 )
 
 // PVEController handles all PVE-related endpoints
@@ -28,15 +28,13 @@ func NewPVEController(pveClient *proxmox.PVEClient) *PVEController {
 // @Success 200 {array} proxmox.VMInfo
 // @Failure 500 {object} map[string]string
 // @Router /api/pve/vms [get]
-func (c *PVEController) GetVMs(ctx *gin.Context) {
+func (c *PVEController) GetVMs(w http.ResponseWriter, r *http.Request) {
 	vms, err := c.pveClient.GetVMs()
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	ctx.JSON(http.StatusOK, vms)
+	json.NewEncoder(w).Encode(vms)
 }
 
 // StartAllVMs handles POST /api/pve/vms/start
@@ -48,17 +46,14 @@ func (c *PVEController) GetVMs(ctx *gin.Context) {
 // @Success 200 {object} map[string]string
 // @Failure 500 {object} map[string]string
 // @Router /api/pve/vms/start [post]
-func (c *PVEController) StartAllVMs(ctx *gin.Context) {
+func (c *PVEController) StartAllVMs(w http.ResponseWriter, r *http.Request) {
 	err := c.pveClient.StartAllVMs()
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "All VMs started successfully",
-	})
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"message": "All VMs started successfully"}`))
 }
 
 // StopAllVMs handles POST /api/pve/vms/stop
@@ -70,17 +65,14 @@ func (c *PVEController) StartAllVMs(ctx *gin.Context) {
 // @Success 200 {object} map[string]string
 // @Failure 500 {object} map[string]string
 // @Router /api/pve/vms/stop [post]
-func (c *PVEController) StopAllVMs(ctx *gin.Context) {
+func (c *PVEController) StopAllVMs(w http.ResponseWriter, r *http.Request) {
 	err := c.pveClient.StopAllVMs()
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "All VMs stopped successfully",
-	})
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"message": "All VMs stopped successfully"}`))
 }
 
 // ResetAllVMs handles POST /api/pve/vms/reset
@@ -92,17 +84,14 @@ func (c *PVEController) StopAllVMs(ctx *gin.Context) {
 // @Success 200 {object} map[string]string
 // @Failure 500 {object} map[string]string
 // @Router /api/pve/vms/reset [post]
-func (c *PVEController) ResetAllVMs(ctx *gin.Context) {
+func (c *PVEController) ResetAllVMs(w http.ResponseWriter, r *http.Request) {
 	err := c.pveClient.ResetAllVMs()
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "All VMs reset successfully",
-	})
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"message": "All VMs reset successfully"}`))
 }
 
 // GetLastReset handles GET /api/pve/reset
@@ -114,18 +103,14 @@ func (c *PVEController) ResetAllVMs(ctx *gin.Context) {
 // @Success 200 {object} map[string]uint64
 // @Failure 500 {object} map[string]string
 // @Router /api/pve/reset [get]
-func (c *PVEController) GetLastReset(ctx *gin.Context) {
+func (c *PVEController) GetLastReset(w http.ResponseWriter, r *http.Request) {
 	lastReset, err := c.pveClient.GetLastReset()
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{
-		"last_reset": lastReset,
-	})
+	json.NewEncoder(w).Encode(lastReset)
 }
 
 // ResetLab handles POST /api/pve/reset
@@ -137,15 +122,12 @@ func (c *PVEController) GetLastReset(ctx *gin.Context) {
 // @Success 200 {object} map[string]string
 // @Failure 500 {object} map[string]string
 // @Router /api/pve/reset [post]
-func (c *PVEController) ResetLab(ctx *gin.Context) {
+func (c *PVEController) ResetLab(w http.ResponseWriter, r *http.Request) {
 	err := c.pveClient.ResetLab()
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "VMs reset successfully",
-	})
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"message": "VMs reset successfully"}`))
 }

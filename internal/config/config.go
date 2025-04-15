@@ -7,6 +7,7 @@ import (
 
 // Config holds all configuration values for the application
 type Config struct {
+	port             string
 	proxmoxURL       string
 	proxmoxAuthToken string
 	pfsenseURL       string
@@ -17,6 +18,11 @@ type Config struct {
 // LoadConfig loads configuration from environment variables
 func LoadConfig() (*Config, error) {
 	config := &Config{}
+
+	config.port = os.Getenv("PORT")
+	if config.port == "" {
+		config.port = "8080"
+	}
 
 	config.proxmoxURL = os.Getenv("PROXMOX_URL")
 	if config.proxmoxURL == "" {
@@ -61,6 +67,11 @@ func LoadConfig() (*Config, error) {
 	}
 
 	return config, nil
+}
+
+// GetPort returns the port
+func (c *Config) GetPort() string {
+	return c.port
 }
 
 // GetProxmoxURL returns the Proxmox URL

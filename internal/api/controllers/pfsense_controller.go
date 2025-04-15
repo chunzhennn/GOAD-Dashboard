@@ -1,10 +1,10 @@
 package controllers
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/chunzhennn/GOAD-Dashboard/internal/platform/pfsense"
-	"github.com/gin-gonic/gin"
 )
 
 type PfsenseController struct {
@@ -26,13 +26,11 @@ func NewPfsenseController(pfsenseClient *pfsense.PfsenseClient) *PfsenseControll
 // @Success 200 {array} pfsense.PfsenseOpenVPNConnection
 // @Failure 500 {object} map[string]string
 // @Router /api/pfsense/openvpn/connections [get]
-func (c *PfsenseController) GetOpenVPNConnections(ctx *gin.Context) {
+func (c *PfsenseController) GetOpenVPNConnections(w http.ResponseWriter, r *http.Request) {
 	connections, err := c.pfsenseClient.GetOpenVPNConnections()
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	ctx.JSON(http.StatusOK, connections)
+	json.NewEncoder(w).Encode(connections)
 }
