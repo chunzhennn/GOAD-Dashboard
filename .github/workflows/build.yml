@@ -1,0 +1,40 @@
+name: Build Docker Image (Check)
+
+on:
+  push:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+
+      - uses: docker/setup-buildx-action@master
+
+      - uses: docker/metadata-action@master
+        id: metadata
+        with:
+          images: ${{ github.repository }}
+
+      - uses: docker/build-push-action@master
+        with:
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          push: false
+          load: true
+          tags: ${{ steps.metadata.outputs.tags }}
+
+      - name: Save Image
+        run: |
+          docker save ${{ steps.metadata.outputs.tags }} > image.tar
+
+      - uses: actions/upload-artifact@main
+        with:
+          name: docker-image
+          path: image.tar
+          compression-level: 9

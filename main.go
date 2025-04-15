@@ -1,6 +1,8 @@
 package main
 
 import (
+	"embed"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -15,6 +17,9 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+//go:embed ui/dist
+var uiFS embed.FS
+
 // @title GOAD Dashboard API
 // @version 1.0
 // @description GOAD Dashboard API
@@ -28,13 +33,6 @@ func main() {
 	pveController := controllers.NewPVEController(pveClient)
 
 	router := gin.Default()
-
-	// Health check endpoint
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "GOAD Dashboard API is running",
-		})
-	})
 
 	// PVE API endpoints
 	pveGroup := router.Group("/api/pve")
@@ -60,6 +58,9 @@ func main() {
 	if swaggerEnabled == "1" {
 		router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
+
+	ui, _ := fs.Sub(uiFS, "ui/dist")
+	router.NoRoute(gin.WrapH(http.FileServer(http.FS(ui))))
 
 	log.Printf("Starting GOAD Dashboard API server...")
 	if err := router.Run(); err != nil {
